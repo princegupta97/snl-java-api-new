@@ -126,6 +126,25 @@ public class TestSnl
 
 		
 	}
+	@Test
+	public void checkThatPlayerIsGoingToCorrectPosition() throws FileNotFoundException, UnsupportedEncodingException, PlayerExistsException, GameInProgressException, MaxPlayersReachedExeption, IOException, InvalidTurnException
+	{
+		board.registerPlayer("Prince");
+		board.registerPlayer("Gupta");
+		board.registerPlayer("Prince1");
+		JSONObject data = board.getData();
+		
+		JSONObject players = data.getJSONArray("players").getJSONObject(0);
+		int current_position = players.getInt("position");
+		UUID playerID = (UUID)players.get("uuid");
+		JSONObject dice = board.rollDice(playerID);
+		int dicevalue = dice.getInt("dice");
+	
+		Assert.assertEquals(data.getJSONArray("steps").getJSONObject(dicevalue+current_position).get("target"), players.get("position"));
+		
+		
+	}
+
 	
 	
 
